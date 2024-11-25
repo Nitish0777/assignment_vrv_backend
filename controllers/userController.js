@@ -1,9 +1,6 @@
 const User = require('../models/user');
 const Category = require('../models/category');
 const jwt = require('jsonwebtoken')
-const sgMail = require('@sendgrid/mail')
-const nodemailer = require('nodemailer');
-const crypto = require('crypto')
 const dotenv = require('dotenv')
 dotenv.config();
 
@@ -54,10 +51,8 @@ module.exports.get_all_details = async (req, res) => {
 
 module.exports.delete_item = async (req, res) => {
     const id = req.params.id;
-    // console.log("id",id)
     try {
         const user = await User.deleteOne({ _id: id });
-        // console.log(user)
         res.status(200).json(user);
     } catch (err) {
         res.status(400).json(err)

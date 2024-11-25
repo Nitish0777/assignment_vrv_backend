@@ -1,6 +1,18 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const Category = require('../models/category');
+const jwt = require('jsonwebtoken');
+
+const dotenv = require('dotenv');  
+dotenv.config();
+
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: maxAge
+    });
+}
+
 
 module.exports.signup_post = async (req, res) => {
 
@@ -21,8 +33,6 @@ module.exports.login_post = async (req, res) => {
 
     try {
         const user = await User.login(email, password, role, active);
-        console.log(process.env.SEND_GRID)
-
         const tokenvalue = createToken(user._id);
         const token = jwt.sign(tokenvalue, process.env.JWT_SECRET);
         res.header('auth-token', token)
@@ -31,7 +41,6 @@ module.exports.login_post = async (req, res) => {
         const errors = handleErrors(err);
         res.status(400).json({ errors })
     }
-
 }
 
 module.exports.update_Password = async (req, res) => {
@@ -81,7 +90,6 @@ module.exports.update_Password = async (req, res) => {
 module.exports.reset_Password = async (req, res) => {
     const { confirmPassword, currentPassword, newPassword } = req.body;
     console.log(confirmPassword, currentPassword, newPassword, req.params.id)
-    // res.send("Hello there")
     if (!confirmPassword || !currentPassword || !newPassword) {
         return res.status(400).send("Please field cannot be empty")
     }

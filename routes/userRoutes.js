@@ -6,12 +6,13 @@ const forgotController = require('../controllers/forgotController')
 const router = Router();
 const requireAuth = require('../helper/requireAuth')
 
+//Auth Realted Routes
 router.post('/signup', authController.signup_post)
 router.post('/login', authController.login_post)
 router.patch('/reset-password/:id',authController.reset_Password)
 router.post('/new-password',authController.update_Password)
 
-
+//User Related Routes
 router.get('/',requireAuth, userController.get_all_details);
 router.get('/dropdownvalue', userController.get_dropdown)
 router.get('/user-details/:id', userController.user_item)
@@ -22,9 +23,12 @@ router.patch('/user-details/:id',requireAuth, userController.userupdate_item)
 router.patch('/all-details/:id', requireAuth, userController.update_item);
 router.delete('/all-details/:id', requireAuth, userController.delete_item);
 
+
+// State Related Routes means activete or deactive
 router.patch('/active/:id/',  stateController.active);
 router.patch('/deactive/:id/', stateController.deactive);
 
+//Forgot Password
 router.post('/forgot-password',forgotController.forgot_password)
 
 module.exports = router;
