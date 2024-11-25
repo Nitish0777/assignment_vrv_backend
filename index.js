@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 const userRouter = require('./routes/userRoutes');
 const Category = require('./models/category');
 const createCategory = require('./category.json');
+const User = require('./models/user');
 
 dotenv.config();
 
