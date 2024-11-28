@@ -74,17 +74,18 @@ module.exports.user_item = async (req, res) => {
 }
 
 module.exports.update_item = async (req, res) => {
-
     try {
         console.log("happening..")
         const upateUser = await User.updateOne({ _id: req.params.id }, { $set: { email: req.body.email, password: req.body.password } })
         console.log(updateUser)
+        return res.status(200).json({ upateUser })
     } catch (err) {
         console.log("happening.. error")
         res.status(400).send(err)
         console.log(err)
     }
 }
+
 module.exports.userupdate_item = async (req, res) => {
     console.log(req.body.email)
     console.log(req.params.id)

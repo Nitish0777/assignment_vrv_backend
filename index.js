@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db'); 
-const userRouter = require('./routes/userRoutes');
+const userRouter = require('./routes/index');
 const Category = require('./models/category');
 const createCategory = require('./category.json');
 const User = require('./models/user');
@@ -41,17 +41,21 @@ app.use(cookieParser());
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Hello');
+    return res.status(200).json({
+        message: 'Welcome to the User Management API',
+    });
 });
 
 app.get('/health', (req, res) => {
-    res.send('Server is up and running');
+    return res.status(200).json({
+        message: 'Server is up and running',
+    });
 });
 
 app.get('/find', async (req, res) => {
     try {
         const users = await User.find();
-        res.send(users);
+        return res.status(200).json(users);
     } catch (error) {
         console.error('Error fetching users:', error);
         res.status(500).send({ message: 'Internal Server Error' });
