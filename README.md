@@ -82,5 +82,5 @@ A secure, flexible, and modular system for managing user authentication and acco
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/auth-user-management-system.git
+   git clone [https://github.com/your-username/auth-user-management-system.git](https://github.com/Nitish0777/assignment_vrv_backend.git)
    cd auth-user-management-system
