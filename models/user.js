@@ -46,26 +46,6 @@ userShema.pre('save', async function (next) {
     next();
 })
 
-
-
-userShema.statics.login = async function (email, password,role,active) {
-    if(role===1){
-        const user=User.find({role:1});
-        return user;
-    }else{
-    const user = await this.findOne({ email });
-    if (user) {
-        const auth = await bcrypt.compare(password, user.password);
-        console.log("The value of auth",auth,password)
-        if (auth) {
-            return user;
-        }
-        throw Error('incorrect password');
-    }
-}
-    throw Error('incorrect email');
-}
-
 const User = mongoose.model('User', userShema);
 
 module.exports = User;

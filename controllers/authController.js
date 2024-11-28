@@ -13,7 +13,7 @@ const createToken = (id) => {
     });
 }
 
-
+// checked and working, tested in postman
 module.exports.signup_post = async (req, res) => {
 
     const { fullname, email, password, role, category } = req.body;
@@ -27,22 +27,69 @@ module.exports.signup_post = async (req, res) => {
     }
 }
 
-
+// checked and working, tested in postman
 module.exports.login_post = async (req, res) => {
-    const { email, password, role, active } = req.body;
+    const { email, password, role } = req.body;
 
     try {
-        const user = await User.login(email, password, role, active);
-        const tokenvalue = createToken(user._id);
-        const token = jwt.sign(tokenvalue, process.env.JWT_SECRET);
-        res.header('auth-token', token)
-        res.status(200).json({ role: user.role, user: user._id, active: user.active })
-    } catch (err) {
-        const errors = handleErrors(err);
-        res.status(400).json({ errors })
-    }
-}
+        // Find user by email and role
+        const user = await User.findOne({ email, role });
+        console.log("User", user);
 
+        // If user not found, return 404
+        if (!user) {
+            return res.status(404).json({ error: 'User not found with the given email and role' });
+        }
+
+        // Verify password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ error: 'Incorrect password' });
+        }
+
+        // Generate a JWT token
+        const token = jwt.sign({ id: user._id, role: user.role, email:user.email }, process.env.JWT_SECRET, {
+            expiresIn: 3600, // 1 hour in seconds
+        });
+
+        // Set the token in an HTTP-only cookie
+        res.cookie('auth-token', token, {
+            httpOnly: true, // Prevents client-side JavaScript access
+            maxAge: 3600 * 1000, // 1 hour in milliseconds
+            sameSite: 'Strict', // Protects against CSRF attacks
+        });
+
+        // Respond with success message
+        return res.status(200).json({
+            message: 'Login successful',
+            role: user.role,
+            user: user._id,
+            active: user.active,
+            token,
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+module.exports.logout_delete = (req, res) => {
+    try {
+        // Clear the auth-token cookie
+        res.clearCookie('auth-token', {
+            httpOnly: true,
+            sameSite: 'Strict',
+        });
+
+        return res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        console.error('Logout error:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+// checked and working, tested in postman
 module.exports.update_Password = async (req, res) => {
     console.log("Request body", req.body)
     const newPassword = req.body.value.newpassword;
@@ -86,7 +133,7 @@ module.exports.update_Password = async (req, res) => {
 
 }
 
-
+// checked and working, tested in postman
 module.exports.reset_Password = async (req, res) => {
     const { confirmPassword, currentPassword, newPassword } = req.body;
     console.log(confirmPassword, currentPassword, newPassword, req.params.id)
@@ -120,8 +167,3 @@ module.exports.reset_Password = async (req, res) => {
     }
 }
 
-
-module.exports.logout_get = (req, res) => {
-    res.cookie('jwt', '', { maxAge: 1 });
-    res.redirect('/');
-}
