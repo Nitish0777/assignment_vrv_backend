@@ -23,56 +23,56 @@ A secure, flexible, and modular system for managing user authentication and acco
 
 ### **State Management**
 - Activate or deactivate user accounts as needed.
-
-### **Forgot Password**
-- Recover accounts with a password reset email.
-
----
-
-## **Technology Stack**
-- **Backend**: Node.js, Express.js
-- **Authentication**: JWT, bcrypt
-- **Database**: MongoDB
-- **Testing**: Postman
-
----
-
+   
+   ### **Forgot Password**
+   - Recover accounts with a password reset email.
+   
+   ---
+   
+   ## **Technology Stack**
+   - **Backend**: Node.js, Express.js
+   - **Authentication**: JWT, bcrypt
+   - **Database**: MongoDB
+   - **Testing**: Postman
+   
+   ---
 ## **API Endpoints**
 
 ### **Authentication**
-| Method | Endpoint               | Description                    |
-|--------|------------------------|--------------------------------|
-| POST   | `/signup`              | Register a new user.           |
-| POST   | `/login`               | Log in with email and password.|
-| DELETE | `/logout`              | Log out and clear the session. |
-| GET    | `/check-login`         | Check if user is logged in.    |
-| PATCH  | `/reset-password/:id`  | Reset password (requires ID).  |
-| POST   | `/new-password`        | Update password securely.      |
+| Method | Endpoint                   | Description                    |
+|--------|----------------------------|--------------------------------|
+| POST   | `/api/signup`              | Register a new user.           |
+| POST   | `/api/login`               | Log in with email and password.|
+| DELETE | `/api/logout`              | Log out and clear the session. |
+| GET    | `/api/check-login`         | Check if user is logged in.    |
+| PATCH  | `/api/reset-password/:id`  | Reset password (requires ID).  |
+| POST   | `/api/new-password`        | Update password securely.      |
 
 ### **User Management**
-| Method | Endpoint                 | Description                          |
-|--------|--------------------------|--------------------------------------|
-| GET    | `/`                      | Get all user details (auth required).|
-| GET    | `/dropdownvalue`         | Get dropdown options.               |
-| GET    | `/user-details/:id`      | Get details for a specific user.    |
-| GET    | `/filter/:category`      | Filter users based on category (auth required). |
-| GET    | `/:email`                | Check if a user is an admin.        |
-| POST   | `/:search`               | Search for users.                   |
-| PATCH  | `/user-details/:id`      | Update specific user details.       |
-| PATCH  | `/all-details/:id`       | Update all user details (auth required). |
-| DELETE | `/all-details/:id`       | Delete a user (auth required).      |
+| Method | Endpoint                     | Description                          |
+|--------|------------------------------|--------------------------------------|
+| GET    | `/api/`                      | Get all user details (auth required).|
+| GET    | `/api/dropdownvalue`         | Get dropdown options.               |
+| GET    | `/api/user-details/:id`      | Get details for a specific user.    |
+| GET    | `/api/filter/:category`      | Filter users based on category (auth required). |
+| GET    | `/api/:email`                | Check if a user is an admin.        |
+| POST   | `/api/:search`               | Search for users.                   |
+| PATCH  | `/api/user-details/:id`      | Update specific user details.       |
+| PATCH  | `/api/all-details/:id`       | Update all user details (auth required). |
+| DELETE | `/api/all-details/:id`       | Delete a user (auth required).      |
 
 ### **State Management**
-| Method | Endpoint                 | Description                          |
-|--------|--------------------------|--------------------------------------|
-| PATCH  | `/active/:id`            | Activate a user account.            |
-| PATCH  | `/deactive/:id`          | Deactivate a user account.          |
+| Method | Endpoint                     | Description                          |
+|--------|------------------------------|--------------------------------------|
+| PATCH  | `/api/active/:id`            | Activate a user account.            |
+| PATCH  | `/api/deactive/:id`          | Deactivate a user account.          |
 
 ### **Forgot Password**
-| Method | Endpoint             | Description                           |
-|--------|----------------------|---------------------------------------|
-| POST   | `/forgot-password`    | Send password reset instructions.    |
+| Method | Endpoint                 | Description                           |
+|--------|--------------------------|---------------------------------------|
+| POST   | `/api/forgot-password`    | Send password reset instructions.    |
 
+---
 ---
 
 ## **How to Use**
